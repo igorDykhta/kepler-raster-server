@@ -1,0 +1,8 @@
+fastapi>=0.100.0
+titiler.core==0.21.1
+titiler.xarray==0.21.1
+titiler.extensions==0.21.1
+titiler.mosaic==0.21.1
+titiler.application==0.21.1
+uvicorn
+gunicorn 
