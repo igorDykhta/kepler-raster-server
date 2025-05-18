@@ -1,13 +1,17 @@
 from fastapi import FastAPI
 from titiler.application.main import app
 
-from rio_tiler.io import Reader
+
+from rio_tiler.io import Reader, STACReader
 
 from titiler.core.factory import (
     TilerFactory
 )
+from titiler.core.resources.enums import OptionalHeader
 
 from src.extensions.terrain import terrainExtension
+
+from src.extensions.mosaic import (STACAssetsParams, DynamicStacBackend, STACMosaicTilerFactory)
 
 ###############################################################################
 # Quantized terrain mesh
@@ -23,4 +27,19 @@ app.include_router(
     terrain.router,
     prefix="/mesh",
     tags=["Quantized terrain mesh"],
+)
+
+###############################################################################
+# Mosaics using a STAC API
+stac_mosaic_tiler = STACMosaicTilerFactory(
+    router_prefix="/stac/mosaic",
+    backend=DynamicStacBackend,
+    # Need to move `asset` one place to the right since the STACReader takes a
+    # URL as the first arg, and the STAC item itself as the second arg
+    dataset_reader=lambda *args, **kwargs: STACReader(None, *args, **kwargs),
+    layer_dependency=STACAssetsParams,
+    optional_headers=[OptionalHeader.server_timing],
+)
+app.include_router(
+    stac_mosaic_tiler.router, prefix="/stac/mosaic", tags=["STAC Mosaics"]
 )

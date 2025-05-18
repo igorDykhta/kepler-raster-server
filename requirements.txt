@@ -11,3 +11,4 @@ numpy==1.26.4
 pymartini>=0.4.4
 pydelatin>=0.2.7
 morecantile>=3.2.5
+planetary_computer>=0.2.2
