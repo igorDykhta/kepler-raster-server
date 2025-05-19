@@ -13,15 +13,25 @@ RUN cd /usr/local/share/ca-certificates/cacert.org && curl -k -O https://www.cac
 RUN update-ca-certificates
 ENV CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
+# Set up pip cache directory
+ENV PIP_CACHE_DIR=/root/.cache/pip
+
+# Install pip and dependencies
 RUN python -m pip install -U pip
 RUN python -m pip install uvicorn uvicorn-worker gunicorn
 
 # Set up the application
 WORKDIR /app
-COPY . /app/
+
+# Copy only requirements first to leverage Docker cache
+COPY requirements.txt .
 
 # Install dependencies
-RUN python -m pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install -r requirements.txt
+
+# Copy the rest of the application
+COPY . .
 
 # Set environment variables
 ENV PYTHONPATH=/app

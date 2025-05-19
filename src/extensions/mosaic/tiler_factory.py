@@ -20,15 +20,8 @@ from rio_tiler.mosaic.methods import PixelSelectionMethod
 
 from titiler.mosaic.factory import MosaicTilerFactory
 
+import random
 
-# This code is copied from marblecutter
-#  https://github.com/mojodna/marblecutter/blob/master/marblecutter/stats.py
-# License:
-# Original work Copyright 2016 Stamen Design
-# Modified work Copyright 2016-2017 Seth Fitzsimmons
-# Modified work Copyright 2016 American Red Cross
-# Modified work Copyright 2016-2017 Humanitarian OpenStreetMap Team
-# Modified work Copyright 2017 Mapzen
 class Timer(object):
     """Time a code block."""
 
@@ -120,6 +113,9 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
             env=Depends(self.environment_dependency),
             # kwargs: Dict = Depends(self.additional_dependency),
         ):
+            tile_id = random.randint(1, 100000)
+            #print('---', tile_id, 'Tile call start', current_time())
+            
             # pylint:disable=unused-argument
             """Create map tile from a COG."""
             timings = []
@@ -128,6 +124,7 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
             tilesize = 1 * 256 # scale * 256
 
             threads = int(os.getenv("MOSAIC_CONCURRENCY", MAX_THREADS))
+            #print('THREADS', threads)
             with Timer() as t:
                 with rasterio.Env(**env): #(**self.gdal_config):
                     with self.backend( # .reader
@@ -146,14 +143,18 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
                         # tile implementation copied from
                         # https://github.com/developmentseed/cogeo-mosaic/blob/0e5828e0a907cef535ff07000b0936fa91933f6e/cogeo_mosaic/backends/base.py#L142-L157
 
+                        #print('---', tile_id, 'Initialized backend', current_time())
+
                         mosaic_assets = mosaic_source.assets_for_tile(x, y, z)
                         if not mosaic_assets:
                             raise NoAssetFoundError(
                                 f"No assets found for tile {z}-{x}-{y}"
                             )
+                        
+                        #print('---', tile_id, 'Got assets', current_time())
 
-                        mosaic_read = t.from_start
-                        timings.append(("mosaicread", round(mosaic_read * 1000, 2)))
+                        #mosaic_read = t.from_start
+                        #timings.append(("mosaicread", round(mosaic_read * 1000, 2)))
 
                         def _reader(
                             asset: str, x: int, y: int, z: int, **kwargs: Any
@@ -168,9 +169,8 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
                             ) as stac_dataset:
                                 return stac_dataset.tile(x, y, z, **kwargs)
                             
-                        print('--- Before mosaic_reader')
-                        print(PixelSelectionMethod.first)
-
+                        #print('---', tile_id, 'Reader', current_time())
+                            
                         data, _ = mosaic_reader(
                             mosaic_assets,
                             _reader,
@@ -185,23 +185,24 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
                             #**kwargs,
                         )
 
-                        print('--- After mosaic_reader')
+                        #print('---', tile_id, 'mosaic reader done', current_time())
 
-            timings.append(("dataread", round((t.elapsed - mosaic_read) * 1000, 2)))
-
+            #print('---', tile_id, 'mosaic - 1 init', round((mosaic_time_1_init) * 1000, 2))
+            #print('---', tile_id, 'mosaic - 2 assets', round((mosaic_time_2_get_assets - mosaic_time_1_init) * 1000, 2))
+            #print('---', tile_id, 'mosaic - 3 reader', round((mosaic_time_3_reader - mosaic_time_2_get_assets) * 1000, 2))
+            #print('---', tile_id, 'mosaic - 4 mosaic reader', round((mosaic_time_4_mosaic_reader - mosaic_time_3_reader) * 1000, 2))
+            
             # format = 'npy'
             if not format:
                 format = ImageType.jpeg if data.mask.all() else ImageType.png
 
             with Timer() as t:
-                print('--- Before post_process')
-                print(render_params)
-
                 image = data.post_process(
                     in_range=render_params.rescale, # rescale_range,
                     color_formula=render_params.color_formula,
                 )
             timings.append(("postprocess", round(t.elapsed * 1000, 2)))
+            #print('---', tile_id, 'postprocess done', round(t.elapsed * 1000, 2))
 
             with Timer() as t:
                 content = image.render(
@@ -212,6 +213,7 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
                     **render_params.as_dict(),
                 )
             timings.append(("format", round(t.elapsed * 1000, 2)))
+            #print('---', tile_id, 'format done in', round(t.elapsed * 1000, 2))
 
             if OptionalHeader.server_timing in self.optional_headers:
                 headers["Server-Timing"] = ", ".join(
@@ -220,5 +222,7 @@ class STACMosaicTilerFactory(MosaicTilerFactory):
 
             if OptionalHeader.x_assets in self.optional_headers:
                 headers["X-Assets"] = ",".join(data.assets)
+
+            #print('---', tile_id, 'Tile call end', current_time())
 
             return Response(content, media_type=format.mediatype, headers=headers)
