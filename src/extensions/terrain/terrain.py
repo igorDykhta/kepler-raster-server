@@ -18,7 +18,6 @@ import rasterio
 from starlette.responses import Response
 from fastapi import Depends, FastAPI, Path, Query
 from titiler.core.factory import FactoryExtension, TilerFactory
-from titiler.core.dependencies import RescalingParams
 from titiler.core.resources.enums import ImageType
 
 from numpy import float32, transpose
@@ -89,9 +88,7 @@ class terrainExtension(FactoryExtension):
             post_process=Depends(factory.process_dependency),
             render_params=Depends(factory.render_dependency),
             reader_params=Depends(factory.reader_dependency),
-            env=Depends(factory.environment_dependency),
-            
-            rescale: Optional[List[Tuple[float, ...]]] = Depends(RescalingParams),
+            env=Depends(factory.environment_dependency)
         ):
             tms = self.supported_tms.get('WebMercatorQuad')
 
@@ -104,8 +101,8 @@ class terrainExtension(FactoryExtension):
                         )
             if post_process:
                 image = post_process(image)
-            if rescale:
-                image.rescale(rescale)
+            #if rescale:
+            #    image.rescale(rescale)
 
             # got the tile data, now do the work
             flip_y: bool = True 

@@ -23,11 +23,11 @@ classifiers = [
 version="0.0.1"
 dependencies = [
     "fastapi>=0.100.0",
-    "titiler.core==0.21.1",
-    "titiler.xarray==0.21.1",
-    "titiler.extensions==0.21.1",
-    "titiler.mosaic==0.21.1",
-    "titiler.application==0.21.1",
+    "titiler.core==0.22.1",
+    "titiler.xarray==0.22.1",
+    "titiler.extensions==0.22.1",
+    "titiler.mosaic==0.22.1",
+    "titiler.application==0.22.1",
 ]
 
 [project.urls]
