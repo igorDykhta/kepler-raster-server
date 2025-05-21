@@ -1,4 +1,4 @@
-# kepler-titiler-tests
+# kepler_raster_server
 
 Run locally with
 
@@ -8,3 +8,6 @@ docker-compose up --build titiler
 
 Publish:
 ./scripts/publish.sh
+
+Deployment:
+https://developmentseed.org/titiler/deployment/aws/lambda/

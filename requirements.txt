@@ -1,4 +1,4 @@
-fastapi>=0.100.0
+fastapi>=0.100.0,<1.0
 titiler.core==0.22.1
 titiler.xarray==0.22.1
 titiler.extensions==0.22.1

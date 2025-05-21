@@ -1,8 +1,8 @@
 [project]
-name = "kepler-titiler-tests"
+name = "kepler_raster_server"
 description = "A dynamic tile server for Raster layer in Kepler.gl."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {file = "LICENSE"}
 authors = [
     {name = "Igor Dykhta", email = "idykhta@foursquare.com"},
@@ -13,16 +13,13 @@ keywords = [
 ]
 classifiers = [
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-version="0.0.1"
+version="0.0.2"
 dependencies = [
-    "fastapi>=0.100.0",
+    "fastapi>=0.100.0,<1.0.0",
     "titiler.core==0.22.1",
     "titiler.xarray==0.22.1",
     "titiler.extensions==0.22.1",
