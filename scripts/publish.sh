@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-rm -rf dist
+rm -rf dist build *.egg-info
 python3 -m build
 
-twine upload --repository testpypi dist/*
+python3 -m twine upload --repository testpypi dist/*
 
 # twine upload dist/*

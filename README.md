@@ -11,3 +11,6 @@ Publish:
 
 Deployment:
 https://developmentseed.org/titiler/deployment/aws/lambda/
+
+npm run cdk -- destroy mytiler-lambda-dev
+npm run cdk -- deploy mytiler-lambda-dev
