@@ -35,7 +35,7 @@ COPY . .
 
 # Set environment variables
 ENV PYTHONPATH=/app
-ENV MODULE_NAME=src.main
+ENV MODULE_NAME=src.kepler_raster_server.main
 ENV VARIABLE_NAME=app
 ENV HOST=0.0.0.0
 ENV PORT=8000

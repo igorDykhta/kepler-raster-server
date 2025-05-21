@@ -1,3 +1,0 @@
-"""
-Kepler Titiler Tests package.
-""" 

@@ -9,7 +9,7 @@ services:
     command:
       [
         "uvicorn",
-        "src.main:app",
+        "src.kepler_raster_server.main:app",
         "--host",
         "0.0.0.0",
         "--port",

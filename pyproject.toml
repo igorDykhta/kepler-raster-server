@@ -1,33 +1,40 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "kepler_raster_server"
-description = "A dynamic tile server for Raster layer in Kepler.gl."
-readme = "README.md"
+name = "kepler-raster-server"
+version = "0.0.7"
 requires-python = ">=3.9"
-license = {file = "LICENSE"}
-authors = [
-    {name = "Igor Dykhta", email = "idykhta@foursquare.com"},
-]
+description = "A Python package for serving Kepler raster tiles"
 keywords = [
     "Kepler.gl",
     "Raster Layer",
 ]
-classifiers = [
-    "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Your Name", email = "your@email.com" }
 ]
-version="0.0.3"
 dependencies = [
-    "fastapi>=0.100.0,<1.0.0",
+    "fastapi>=0.100.0,<1.0",
     "titiler.core==0.22.1",
     "titiler.xarray==0.22.1",
     "titiler.extensions==0.22.1",
     "titiler.mosaic==0.22.1",
     "titiler.application==0.22.1",
+    "quantized-mesh-encoder>=0.4.3",
+    "pymartini>=0.4.4",
+    "pydelatin>=0.2.7",
+    "morecantile>=3.2.5",
+    "planetary_computer>=0.2.2",
 ]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [project.urls]
 Homepage = 'https://github.com/igorDykhta/kepler-titiler-tests'
@@ -35,10 +42,3 @@ Documentation = "https://github.com/igorDykhta/kepler-titiler-tests"
 Issues = "https://github.com/igorDykhta/kepler-titiler-tests/issues"
 Source = "https://github.com/igorDykhta/kepler-titiler-tests"
 Changelog = "https://github.com/igorDykhta/kepler-titiler-tests/changelog"
-
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
-
-[build-system]
-requires = ["hatchling>=1.12.0"]
-build-backend = "hatchling.build"
