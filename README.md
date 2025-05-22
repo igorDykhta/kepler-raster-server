@@ -1,11 +1,13 @@
 # Kepler Raster Server
 
-A raster tile server built on top of TiTiler, providing terrain mesh and STAC mosaic capabilities.
+A raster tile server built on top of [TiTiler](https://github.com/developmentseed/titiler), providing terrain mesh and STAC mosaic capabilities.
+
+> This project is an extension of [TiTiler](https://github.com/developmentseed/titiler) by Development Seed. All TiTiler licenses and attributions apply to this project.
 
 ## Features
 
 - **Terrain Mesh Generation**: Generate quantized mesh terrain tiles for 3D visualization
-- **STAC Mosaic Support**: Dynamic STAC API integration for tile servinge
+- **STAC Mosaic Support**: Dynamic STAC API integration for tile serving
 
 ## Installation
 
@@ -59,4 +61,13 @@ To publish a new version to PyPI:
 
 ## License
 
-[Add your license information here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Attribution
+
+This project is built on top of [TiTiler](https://github.com/developmentseed/titiler) by Development Seed, which is also licensed under the MIT License. All TiTiler licenses and attributions apply to this project.
+
+## Credits
+
+- [TiTiler](https://github.com/developmentseed/titiler) by Development Seed - The base tile server implementation
+- [Development Seed](https://developmentseed.org/) - For their excellent work on TiTiler and related geospatial tools
