@@ -1,8 +1,6 @@
 # Kepler Raster Server
 
-A raster tile server built on top of [TiTiler](https://github.com/developmentseed/titiler), providing terrain mesh and STAC mosaic capabilities.
-
-> This project is an extension of [TiTiler](https://github.com/developmentseed/titiler) by Development Seed. All TiTiler licenses and attributions apply to this project.
+A raster tile server built on top of [TiTiler](https://github.com/developmentseed/titiler) by Development Seed, providing terrain mesh and STAC mosaic capabilities. All TiTiler licenses and attributions apply to this project.
 
 ## Features
 
@@ -32,6 +30,8 @@ The raster tile server will be available at `http://localhost:8000` and can be u
 
 ## API Endpoints
 
+The following endpoints are required for raster tile layer in kepler.gl.
+
 ### Terrain Mesh
 
 - `/mesh/tiles/{z}/{x}/{y}.terrain` - Get terrain mesh tiles
@@ -46,7 +46,21 @@ The raster tile server will be available at `http://localhost:8000` and can be u
 
 ### AWS Lambda Deployment
 
-Follow the [TiTiler AWS Lambda deployment guide](https://developmentseed.org/titiler/deployment/aws/lambda/) for serverless deployment. Note that you'll need enough concurency to support lambda instance per request. In kepler.gl it's at this moment the limit is 6 per server (or 12 when elevation meshes are enabled).
+Follow the [TiTiler AWS Lambda deployment guide](https://developmentseed.org/titiler/deployment/aws/lambda/) for serverless deployment. Note that you'll need enough concurrency to support lambda instance per request. In kepler.gl at this moment raster tile layer issues 6 requests per raster server during loading (or 12 when elevation meshes are enabled).
+Make sure to setup enough Lambda Provisioned concurrency to prevent 503 Service not available message.
+
+If you need to process many requests concurrently more reliably:
+
+- Use AWS Fargate, ECS, or EC2 where multi-threaded or async server logic is supported
+- See the [TiTiler AWS deployment guide](https://developmentseed.org/titiler/deployment/aws/intro/) for more details
+
+### Using in Your Application
+
+To use the server in your Python application:
+
+```python
+from kepler_raster_server import app as kepler_app
+```
 
 ### Publishing to PyPI
 
