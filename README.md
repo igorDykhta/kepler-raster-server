@@ -18,7 +18,7 @@ git clone https://github.com/yourusername/kepler-raster-server.git
 cd kepler-raster-server
 ```
 
-2. Build and run with Docker:
+2. Build and run with Docker locally:
 
 ```bash
 # Enable Docker BuildKit for better caching
@@ -26,7 +26,7 @@ export DOCKER_BUILDKIT=1
 docker-compose up --build titiler
 ```
 
-The raster tile server will be available at `http://localhost:8000` and can be used to setup a raster tile layer in kepler.gl.
+The raster tile server will be available at `http://localhost:8000` and can be used to setup a raster tile layer in kepler.gl during development.
 
 ## API Endpoints
 
@@ -48,6 +48,7 @@ The following endpoints are required for raster tile layer in kepler.gl.
 
 Follow the [TiTiler AWS Lambda deployment guide](https://developmentseed.org/titiler/deployment/aws/lambda/) for serverless deployment. Note that you'll need enough concurrency to support lambda instance per request. In kepler.gl at this moment raster tile layer issues 6 requests per raster server during loading (or 12 when elevation meshes are enabled).
 Make sure to setup enough Lambda Provisioned concurrency to prevent 503 Service not available message.
+Make sure to control your expenses and don't share your server URL publicly unless intended.
 
 If you need to process many requests concurrently more reliably:
 
