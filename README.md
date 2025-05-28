@@ -4,7 +4,7 @@ A raster tile server built on top of [TiTiler](https://github.com/developmentsee
 
 ## Features
 
-- **Terrain Mesh Generation**: Generate quantized mesh terrain tiles for 3D visualization
+- **Terrain Mesh Generation**: Generate quantized mesh terrain tiles for 3D visualization for STAC raster tiles and .pmtiles in raster format
 - **STAC Mosaic Support**: Dynamic STAC API integration for tile serving
 
 ## Installation
@@ -32,15 +32,17 @@ The raster tile server will be available at `http://localhost:8000` and can be u
 
 The following endpoints are required for raster tile layer in kepler.gl.
 
-### Terrain Mesh
+### STAC Items
 
-- `/mesh/tiles/{z}/{x}/{y}.terrain` - Get terrain mesh tiles
-- `/mesh/tiles/{z}/{x}/{y}@{scale}x.terrain` - Get scaled terrain mesh tiles
+- `/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.npy` - Get stac items in npy format
 
 ### STAC Mosaic
 
-- `/stac/mosaic/tiles/{z}/{x}/{y}.{format}` - Get mosaic tiles
-- `/stac/mosaic/tiles/{z}/{x}/{y}@{scale}x.{format}` - Get scaled mosaic tiles
+- `/stac/mosaic/tiles/{z}/{x}/{y}.npy` - Get mosaic tiles in npy format
+
+### Terrain Mesh
+
+- `/mesh/tiles/{z}/{x}/{y}.terrain` - Get quantized mesh suitable with QuantizedMeshLoader from loaders.gl
 
 ## Deployment
 
